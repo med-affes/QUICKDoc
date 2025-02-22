@@ -392,9 +392,21 @@ input[type=search]:focus {
 .menu-icon-home{
   background-image: url('../img/icons/home.svg');
 }
-.menu-icon-emergency{
-  background-image: url('../img/icons/emergency.png');
+.menu-icon-emergency {
+  background-image: url('../img/icons/emergency.png'); /* Path to your emergency icon */
+  background-size: 20px 20px; /* Adjust dimensions as needed */
+  background-repeat: no-repeat;
+  background-position: left center; /* Adjust positioning as needed */
+  margin-top: 20px; /* Add spacing above the emergency button */
+  padding-left: 30px; /* Add padding to make space for the icon */
 }
+
+.menu-text-emergency {
+  display: inline;
+  vertical-align: middle;
+  color: red;
+}
+
 
 
 

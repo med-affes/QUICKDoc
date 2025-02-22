@@ -51,7 +51,6 @@
     $stmt->execute();
     $userrow = $stmt->get_result();
     $userfetch=$userrow->fetch_assoc();
-
     $userid= $userfetch["pid"];
     $username=$userfetch["pname"];
 
@@ -110,15 +109,14 @@
                     </td>
                 </tr>
                 <tr class="menu-row">
-                  <td class="menu-btn menu-icon-emergency">
-                    <a href="Emergency_Alert.php" class="non-style-link-menu">
-                    <div style="display: flex; align-items: center;">
-                       <i class="fa-solid fa-bell" style= margin-right: 8px;"></i>
-                        <p class="menu-text" style="display: inline;">Emergency Alert</p>
-                    </div>
-                    </a>
-                  </td>
-                </tr>
+                <td class="menu-btn menu-icon-emergency">
+                       <a href="Emergency_Alert.php" class="non-style-link-menu">
+                   <div>
+                        <p class="menu-text-emergency">Emergency Alert</p>
+                  </div>
+                       </a>
+              </td>
+               </tr>
 
                 
             </table>

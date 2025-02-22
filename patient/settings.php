@@ -1,59 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/animations.css">  
-    <link rel="stylesheet" href="../css/main.css">  
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/admin.css">
-        
+
 
 
     <title>Settings</title>
     <style>
-        .dashbord-tables{
+        .dashbord-tables {
             animation: transitionIn-Y-over 0.5s;
         }
-        .filter-container{
-            animation: transitionIn-X  0.5s;
+
+        .filter-container {
+            animation: transitionIn-X 0.5s;
         }
-        .sub-table{
+
+        .sub-table {
             animation: transitionIn-Y-bottom 0.5s;
         }
     </style>
-    
-    
+
+
 </head>
+
 <body>
     <?php
 
     //learn from w3schools.com
-
+    
     session_start();
 
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='p'){
+    if (isset($_SESSION["user"])) {
+        if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'p') {
             header("location: ../login.php");
-        }else{
-            $useremail=$_SESSION["user"];
+        } else {
+            $useremail = $_SESSION["user"];
         }
 
-    }else{
+    } else {
         header("location: ../login.php");
     }
-    
+
 
     //import database
     include("../connection.php");
-    $sqlmain= "select * from patient where pemail=?";
+    $sqlmain = "select * from patient where pemail=?";
     $stmt = $database->prepare($sqlmain);
-    $stmt->bind_param("s",$useremail);
+    $stmt->bind_param("s", $useremail);
     $stmt->execute();
     $result = $stmt->get_result();
-    $userfetch=$result->fetch_assoc();
-    $userid= $userfetch["pid"];
-    $username=$userfetch["pname"];
+    $userfetch = $result->fetch_assoc();
+    $userid = $userfetch["pid"];
+    $username = $userfetch["pname"];
 
     ?>
     <div class="container">
@@ -106,63 +110,66 @@
                     </td>
                 </tr>
                 <tr class="menu-row">
-                  <td class="menu-btn menu-icon-emergency">
-                    <a href="Emergency_Alert.php" class="non-style-link-menu">
-                    <div style="display: flex; align-items: center;">
-                       <i class="fa-solid fa-bell" style= margin-right: 8px;"></i>
-                        <p class="menu-text" style="display: inline;">Emergency Alert</p>
-                    </div>
-                    </a>
-                  </td>
-                </tr>
+                <td class="menu-btn menu-icon-emergency">
+                       <a href="Emergency_Alert.php" class="non-style-link-menu">
+                   <div>
+                        <p class="menu-text-emergency">Emergency Alert</p>
+                  </div>
+                       </a>
+              </td>
+               </tr>
 
                 
             </table>
         </div>
-        <div class="dash-body" style="margin-top: 15px">
-            <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;" >
-                        
-                        <tr >
-                            
-                        <td width="13%" >
-                    <a href="settings.php" ><button  class="login-btn btn-primary-soft btn btn-icon-back"  style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px"><font class="tn-in-text">Back</font></button></a>
-                    </td>
-                    <td>
-                        <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Settings</p>
-                                           
-                    </td>
-                    
-                            <td width="15%">
-                                <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
-                                    Today's Date
-                                </p>
-                                <p class="heading-sub12" style="padding: 0;margin: 0;">
-                                    <?php 
-                                date_default_timezone_set('Asia/Kolkata');
-        
-                                $today = date('Y-m-d');
-                                echo $today;
+    <div class="dash-body" style="margin-top: 15px">
+        <table border="0" width="100%" style=" border-spacing: 0;margin:0;padding:0;">
+
+            <tr>
+
+                <td width="13%">
+                    <a href="settings.php"><button class="login-btn btn-primary-soft btn btn-icon-back"
+                            style="padding-top:11px;padding-bottom:11px;margin-left:20px;width:125px">
+                            <font class="tn-in-text">Back</font>
+                        </button></a>
+                </td>
+                <td>
+                    <p style="font-size: 23px;padding-left:12px;font-weight: 600;">Settings</p>
+
+                </td>
+
+                <td width="15%">
+                    <p style="font-size: 14px;color: rgb(119, 119, 119);padding: 0;margin: 0;text-align: right;">
+                        Today's Date
+                    </p>
+                    <p class="heading-sub12" style="padding: 0;margin: 0;">
+                        <?php
+                        date_default_timezone_set('Asia/Kolkata');
+
+                        $today = date('Y-m-d');
+                        echo $today;
 
 
-                                $patientrow = $database->query("select  * from  patient;");
-                                $doctorrow = $database->query("select  * from  doctor;");
-                                $appointmentrow = $database->query("select  * from  appointment where appodate>='$today';");
-                                $schedulerow = $database->query("select  * from  schedule where scheduledate='$today';");
+                        $patientrow = $database->query("select  * from  patient;");
+                        $doctorrow = $database->query("select  * from  doctor;");
+                        $appointmentrow = $database->query("select  * from  appointment where appodate>='$today';");
+                        $schedulerow = $database->query("select  * from  schedule where scheduledate='$today';");
 
 
-                                ?>
-                                </p>
-                            </td>
-                            <td width="10%">
-                                <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
-                            </td>
-        
-        
-                        </tr>
-                <tr>
-                    <td colspan="4">
-                        
-                        <center>
+                        ?>
+                    </p>
+                </td>
+                <td width="10%">
+                    <button class="btn-label" style="display: flex;justify-content: center;align-items: center;"><img
+                            src="../img/calendar.svg" width="100%"></button>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td colspan="4">
+
+                    <center>
                         <table class="filter-container" style="border: none;" border="0">
                             <tr>
                                 <td colspan="4">
@@ -172,23 +179,25 @@
                             <tr>
                                 <td style="width: 25%;">
                                     <a href="?action=edit&id=<?php echo $userid ?>&error=0" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex">
-                                        <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/doctors-hover.svg');"></div>
-                                        <div>
+                                        <div class="dashboard-items setting-tabs"
+                                            style="padding:20px;margin:auto;width:95%;display: flex">
+                                            <div class="btn-icon-back dashboard-icons-setting"
+                                                style="background-image: url('../img/icons/doctors-hover.svg');"></div>
+                                            <div>
                                                 <div class="h1-dashboard">
-                                                    Account Settings  &nbsp;
+                                                    Account Settings &nbsp;
 
                                                 </div><br>
                                                 <div class="h3-dashboard" style="font-size: 15px;">
                                                     Edit your Account Details & Change Password
                                                 </div>
+                                            </div>
+
                                         </div>
-                                                
-                                    </div>
                                     </a>
                                 </td>
-                                
-                                
+
+
                             </tr>
                             <tr>
                                 <td colspan="4">
@@ -196,24 +205,26 @@
                                 </td>
                             </tr>
                             <tr>
-                            <td style="width: 25%;">
+                                <td style="width: 25%;">
                                     <a href="?action=view&id=<?php echo $userid ?>" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                        <div class="btn-icon-back dashboard-icons-setting " style="background-image: url('../img/icons/view-iceblue.svg');"></div>
-                                        <div>
-                                                <div class="h1-dashboard" >
+                                        <div class="dashboard-items setting-tabs"
+                                            style="padding:20px;margin:auto;width:95%;display: flex;">
+                                            <div class="btn-icon-back dashboard-icons-setting "
+                                                style="background-image: url('../img/icons/view-iceblue.svg');"></div>
+                                            <div>
+                                                <div class="h1-dashboard">
                                                     View Account Details
-                                                    
+
                                                 </div><br>
-                                                <div class="h3-dashboard"  style="font-size: 15px;">
+                                                <div class="h3-dashboard" style="font-size: 15px;">
                                                     View Personal information About Your Account
                                                 </div>
+                                            </div>
+
                                         </div>
-                                                
-                                    </div>
                                     </a>
                                 </td>
-                                
+
                             </tr>
                             <tr>
                                 <td colspan="4">
@@ -221,40 +232,43 @@
                                 </td>
                             </tr>
                             <tr>
-                            <td style="width: 25%;">
-                                    <a href="?action=drop&id=<?php echo $userid.'&name='.$username ?>" class="non-style-link">
-                                    <div  class="dashboard-items setting-tabs"  style="padding:20px;margin:auto;width:95%;display: flex;">
-                                        <div class="btn-icon-back dashboard-icons-setting" style="background-image: url('../img/icons/patients-hover.svg');"></div>
-                                        <div>
+                                <td style="width: 25%;">
+                                    <a href="?action=drop&id=<?php echo $userid . '&name=' . $username ?>"
+                                        class="non-style-link">
+                                        <div class="dashboard-items setting-tabs"
+                                            style="padding:20px;margin:auto;width:95%;display: flex;">
+                                            <div class="btn-icon-back dashboard-icons-setting"
+                                                style="background-image: url('../img/icons/patients-hover.svg');"></div>
+                                            <div>
                                                 <div class="h1-dashboard" style="color: #ff5050;">
                                                     Delete Account
-                                                    
+
                                                 </div><br>
-                                                <div class="h3-dashboard"  style="font-size: 15px;">
+                                                <div class="h3-dashboard" style="font-size: 15px;">
                                                     Will Permanently Remove your Account
                                                 </div>
+                                            </div>
+
                                         </div>
-                                                
-                                    </div>
                                     </a>
                                 </td>
-                                
+
                             </tr>
                         </table>
                     </center>
-                    </td>
-                </tr>
-            
-            </table>
-        </div>
+                </td>
+            </tr>
+
+        </table>
     </div>
-    <?php 
-    if($_GET){
-        
-        $id=$_GET["id"];
-        $action=$_GET["action"];
-        if($action=='drop'){
-            $nameget=$_GET["name"];
+    </div>
+    <?php
+    if ($_GET) {
+
+        $id = $_GET["id"];
+        $action = $_GET["action"];
+        if ($action == 'drop') {
+            $nameget = $_GET["name"];
             echo '
             <div id="popup1" class="overlay">
                     <div class="popup">
@@ -262,11 +276,11 @@
                         <h2>Are you sure?</h2>
                         <a class="close" href="settings.php">&times;</a>
                         <div class="content">
-                            You want to delete Your Account<br>('.substr($nameget,0,40).').
+                            You want to delete Your Account<br>(' . substr($nameget, 0, 40) . ').
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
-                        <a href="delete-account.php?id='.$id.'" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
+                        <a href="delete-account.php?id=' . $id . '" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"<font class="tn-in-text">&nbsp;Yes&nbsp;</font></button></a>&nbsp;&nbsp;&nbsp;
                         <a href="settings.php" class="non-style-link"><button  class="btn-primary btn"  style="display: flex;justify-content: center;align-items: center;margin:10px;padding:10px;"><font class="tn-in-text">&nbsp;&nbsp;No&nbsp;&nbsp;</font></button></a>
 
                         </div>
@@ -274,21 +288,21 @@
             </div>
             </div>
             ';
-        }elseif($action=='view'){
-            $sqlmain= "select * from patient where pid=?";
+        } elseif ($action == 'view') {
+            $sqlmain = "select * from patient where pid=?";
             $stmt = $database->prepare($sqlmain);
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $result = $stmt->get_result();
-            $row=$result->fetch_assoc();
-            $name=$row["pname"];
-            $email=$row["pemail"];
-            $address=$row["paddress"];
-            
-           
-            $dob=$row["pdob"];
-            $nic=$row['pnic'];
-            $tele=$row['ptel'];
+            $row = $result->fetch_assoc();
+            $name = $row["pname"];
+            $email = $row["pemail"];
+            $address = $row["paddress"];
+
+
+            $dob = $row["pdob"];
+            $nic = $row['pnic'];
+            $tele = $row['ptel'];
             echo '
             <div id="popup1" class="overlay">
                     <div class="popup">
@@ -316,7 +330,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                    '.$name.'<br><br>
+                                    ' . $name . '<br><br>
                                 </td>
                                 
                             </tr>
@@ -327,7 +341,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$email.'<br><br>
+                                ' . $email . '<br><br>
                                 </td>
                             </tr>
                             <tr>
@@ -337,7 +351,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
+                                ' . $nic . '<br><br>
                                 </td>
                             </tr>
                             <tr>
@@ -347,7 +361,7 @@
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$tele.'<br><br>
+                                ' . $tele . '<br><br>
                                 </td>
                             </tr>
                             <tr>
@@ -358,7 +372,7 @@
                             </tr>
                             <tr>
                             <td class="label-td" colspan="2">
-                            '.$address.'<br><br>
+                            ' . $address . '<br><br>
                             </td>
                             </tr>
                             <tr>
@@ -369,7 +383,7 @@
                             </tr>
                             <tr>
                             <td class="label-td" colspan="2">
-                            '.$dob.'<br><br>
+                            ' . $dob . '<br><br>
                             </td>
                             </tr>
                             <tr>
@@ -389,34 +403,34 @@
             </div>
             </div>
             ';
-        }elseif($action=='edit'){
-            $sqlmain= "select * from patient where pid=?";
+        } elseif ($action == 'edit') {
+            $sqlmain = "select * from patient where pid=?";
             $stmt = $database->prepare($sqlmain);
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $result = $stmt->get_result();
-            $row=$result->fetch_assoc();
-            $name=$row["pname"];
-            $email=$row["pemail"];
-           
-            
-            
-            $address=$row["paddress"];
-            $nic=$row['pnic'];
-            $tele=$row['ptel'];
+            $row = $result->fetch_assoc();
+            $name = $row["pname"];
+            $email = $row["pemail"];
 
-            $error_1=$_GET["error"];
-                $errorlist= array(
-                    '1'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Already have an account for this Email address.</label>',
-                    '2'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Password Conformation Error! Reconform Password</label>',
-                    '3'=>'<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;"></label>',
-                    '4'=>"",
-                    '0'=>'',
 
-                );
 
-            if($error_1!='4'){
-                    echo '
+            $address = $row["paddress"];
+            $nic = $row['pnic'];
+            $tele = $row['ptel'];
+
+            $error_1 = $_GET["error"];
+            $errorlist = array(
+                '1' => '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Already have an account for this Email address.</label>',
+                '2' => '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Password Conformation Error! Reconform Password</label>',
+                '3' => '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;"></label>',
+                '4' => "",
+                '0' => '',
+
+            );
+
+            if ($error_1 != '4') {
+                echo '
                     <div id="popup1" class="overlay">
                             <div class="popup">
                             <center>
@@ -426,27 +440,27 @@
                                 <div class="abc">
                                 <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
                                 <tr>
-                                        <td class="label-td" colspan="2">'.
-                                            $errorlist[$error_1]
-                                        .'</td>
+                                        <td class="label-td" colspan="2">' .
+                    $errorlist[$error_1]
+                    . '</td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Edit User Account Details.</p>
-                                        User ID : '.$id.' (Auto Generated)<br><br>
+                                        User ID : ' . $id . ' (Auto Generated)<br><br>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
                                             <form action="edit-user.php" method="POST" class="add-new-form">
                                             <label for="Email" class="form-label">Email: </label>
-                                            <input type="hidden" value="'.$id.'" name="id00">
+                                            <input type="hidden" value="' . $id . '" name="id00">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                        <input type="hidden" name="oldemail" value="'.$email.'" >
-                                        <input type="email" name="email" class="input-text" placeholder="Email Address" value="'.$email.'" required><br>
+                                        <input type="hidden" name="oldemail" value="' . $email . '" >
+                                        <input type="email" name="email" class="input-text" placeholder="Email Address" value="' . $email . '" required><br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -457,7 +471,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="text" name="name" class="input-text" placeholder="Doctor Name" value="'.$name.'" required><br>
+                                            <input type="text" name="name" class="input-text" placeholder="Doctor Name" value="' . $name . '" required><br>
                                         </td>
                                         
                                     </tr>
@@ -469,7 +483,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="text" name="nic" class="input-text" placeholder="NIC Number" value="'.$nic.'" required><br>
+                                            <input type="text" name="nic" class="input-text" placeholder="NIC Number" value="' . $nic . '" required><br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -479,7 +493,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                            <input type="tel" name="Tele" class="input-text" placeholder="Telephone Number" value="'.$tele.'" required><br>
+                                            <input type="tel" name="Tele" class="input-text" placeholder="Telephone Number" value="' . $tele . '" required><br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -490,7 +504,7 @@
                                     </tr>
                                     <tr>
                                         <td class="label-td" colspan="2">
-                                        <input type="text" name="address" class="input-text" placeholder="Address" value="'.$address.'" required><br>
+                                        <input type="text" name="address" class="input-text" placeholder="Address" value="' . $address . '" required><br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -533,8 +547,8 @@
                     </div>
                     </div>
                     ';
-        }else{
-            echo '
+            } else {
+                echo '
                 <div id="popup1" class="overlay">
                         <div class="popup">
                         <center>
@@ -559,10 +573,13 @@
 
 
 
-        }; }
+            }
+            ;
+        }
 
     }
-        ?>
+    ?>
 
 </body>
+
 </html>
