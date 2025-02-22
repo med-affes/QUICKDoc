@@ -32,7 +32,6 @@
 <body>
     <?php
 
-    //learn from w3schools.com
     
     session_start();
 
